@@ -1991,7 +1991,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
   CGSize containerViewSize = _backgroundView.frame.size;
 
   if (_backgroundView.arrowHeight > 0) {
-    if (UIDeviceOrientationIsLandscape(orientation)) {
+    if (UIDeviceOrientationIsLandscape(orientation) && WY_IS_IOS_EQUAL_TO(@"7.0")) {
       containerViewSize.width = _backgroundView.frame.size.height;
       containerViewSize.height = _backgroundView.frame.size.width;
     }
