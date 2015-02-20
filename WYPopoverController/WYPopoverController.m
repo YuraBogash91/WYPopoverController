@@ -2519,7 +2519,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
   }
 
   if (shouldDismiss) {
-    [self dismissPopoverAnimated:_animated options:options completion:nil callDelegate:YES];
+    [self dismissPopoverAnimated:YES options:options completion:nil callDelegate:YES];
   }
 }
 
