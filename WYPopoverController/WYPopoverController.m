@@ -1691,7 +1691,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
 
     UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
 
-    result = CGSizeMake(320, UIDeviceOrientationIsLandscape(orientation) ? windowSize.width : windowSize.height);
+      result = CGSizeMake(self.containerWidth > 0 ? self.containerWidth : 320, UIDeviceOrientationIsLandscape(orientation) ? windowSize.width : windowSize.height);
   }
 
   return result;
@@ -1773,7 +1773,6 @@ static WYPopoverTheme *defaultTheme_ = nil;
   _permittedArrowDirections = aArrowDirections;
   _animated = aAnimated;
   options = aOptions;
-
   if (!_inView) {
     _inView = [UIApplication sharedApplication].keyWindow.rootViewController.view;
     if (CGRectIsEmpty(_rect)) {
@@ -1810,6 +1809,7 @@ static WYPopoverTheme *defaultTheme_ = nil;
     [_inView.window insertSubview:_overlayView belowSubview:_backgroundView];
   }
 
+    
   [self updateThemeUI];
 
   __weak __typeof__(self) weakSelf = self;
@@ -1863,20 +1863,50 @@ static WYPopoverTheme *defaultTheme_ = nil;
     if ((options & WYPopoverAnimationOptionScale) == WYPopoverAnimationOptionScale) {
       CGAffineTransform startTransform = [self transformForArrowDirection:_backgroundView.arrowDirection];
       _backgroundView.transform = startTransform;
+    
     }
+      CGRect endFrame = _backgroundView.frame;
 
-    [UIView animateWithDuration:_animationDuration animations:^{
-      __typeof__(self) strongSelf = weakSelf;
-
-      if (strongSelf) {
-        strongSelf->_overlayView.alpha = 1;
-        strongSelf->_backgroundView.alpha = strongSelf->_backgroundView.preferredAlpha;
-        strongSelf->_backgroundView.transform = endTransform;
+      if ((options & WYPopoverAnimationOptionFromTop) == WYPopoverAnimationOptionFromTop || (options & WYPopoverAnimationOptionFromTopInCenter) == WYPopoverAnimationOptionFromTopInCenter) {
+          CGRect newFrame = _backgroundView.frame;
+          newFrame.origin.y = -20;
+          _backgroundView.frame = newFrame;
       }
-      adjustTintDimmed();
-    } completion:^(BOOL finished) {
-      completionBlock(YES);
-    }];
+
+      
+      [UIView animateWithDuration:0.6 delay:0.1 usingSpringWithDamping:0 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+          __typeof__(self) strongSelf = weakSelf;
+          
+          if (strongSelf) {
+              strongSelf->_overlayView.alpha = 1;
+              strongSelf->_backgroundView.alpha = 1;
+              strongSelf->_backgroundView.transform = endTransform;
+              if ((options & WYPopoverAnimationOptionFromTop) == WYPopoverAnimationOptionFromTop || (options & WYPopoverAnimationOptionFromTopInCenter) == WYPopoverAnimationOptionFromTopInCenter) {
+                  strongSelf->_backgroundView.frame = endFrame;
+              }
+          }
+          adjustTintDimmed();
+          
+      } completion:^(BOOL finished) {
+          completionBlock(YES);
+      }];
+
+      
+//        [UIView animateWithDuration:_animationDuration animations:^{
+//      __typeof__(self) strongSelf = weakSelf;
+//
+//      if (strongSelf) {
+//        strongSelf->_overlayView.alpha = 1;
+//        strongSelf->_backgroundView.alpha = strongSelf->_backgroundView.preferredAlpha;
+//        strongSelf->_backgroundView.transform = endTransform;
+//          if ((options & WYPopoverAnimationOptionFromTop) == WYPopoverAnimationOptionFromTop) {
+//              strongSelf->_backgroundView.frame = endFrame;
+//          }
+//      }
+//      adjustTintDimmed();
+//    } completion:^(BOOL finished) {
+//      completionBlock(YES);
+//    }];
   } else {
     adjustTintDimmed();
     completionBlock(NO);
@@ -2034,14 +2064,14 @@ static WYPopoverTheme *defaultTheme_ = nil;
     }
 #endif
 
-    if (_wantsDefaultContentAppearance == NO) {
+    if (_wantsDefaultContentAppearance == NO && !_isMaterialNavBar) {
       [navigationController.navigationBar setBackgroundImage:[UIImage wy_imageWithColor:[UIColor clearColor]] forBarMetrics:UIBarMetricsDefault];
     }
   }
 
   _viewController.view.clipsToBounds = YES;
 
-  if (_backgroundView.borderWidth == 0) {
+  if (_backgroundView.borderWidth == 0 && !_isMaterialNavBar) {
     _viewController.view.layer.cornerRadius = _backgroundView.outerCornerRadius;
   }
 }
@@ -2308,10 +2338,20 @@ static WYPopoverTheme *defaultTheme_ = nil;
 
   containerFrame = CGRectIntegral(containerFrame);
 
+    
+    if ((options & WYPopoverAnimationOptionFromTop) == WYPopoverAnimationOptionFromTop) {
+        containerFrame.origin.x = 0;
+    }
+    if ((options & WYPopoverAnimationOptionFromTopInCenter) == WYPopoverAnimationOptionFromTopInCenter) {
+        containerFrame.origin.y += _rect.size.height;
+        containerFrame.size.height -= _rect.size.height;
+    }
+    
   _backgroundView.frame = containerFrame;
 
   _backgroundView.wantsDefaultContentAppearance = _wantsDefaultContentAppearance;
 
+    
   [_backgroundView setViewController:_viewController];
 
   // keyboard support

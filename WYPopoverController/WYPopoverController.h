@@ -31,7 +31,7 @@
 @class WYPopoverTheme;
 
 #ifndef WY_POPOVER_DEFAULT_ANIMATION_DURATION
-#define WY_POPOVER_DEFAULT_ANIMATION_DURATION    .15f
+#define WY_POPOVER_DEFAULT_ANIMATION_DURATION    .3f
 #endif
 
 #ifndef WY_POPOVER_MIN_SIZE
@@ -51,7 +51,13 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverArrowDirection) {
 typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
   WYPopoverAnimationOptionFade = 1UL << 0,            // default
   WYPopoverAnimationOptionScale = 1UL << 1,
-  WYPopoverAnimationOptionFadeWithScale = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionScale
+  WYPopoverAnimationOptionFromTop = 1UL << 2,
+  WYPopoverAnimationOptionFromTopInCenter = 1UL << 3,
+  WYPopoverAnimationOptionFadeWithScale = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionScale,
+  WYPopoverAnimationOptionFadeWithFromTop= WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromTop,
+  WYPopoverAnimationOptionFadeWithFromTopInCenter = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromTopInCenter
+
+
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,6 +118,8 @@ typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
 @property (nonatomic, assign) CGSize                            popoverContentSize;
 @property (nonatomic, assign) float                             animationDuration;
 @property (nonatomic, assign) BOOL                              implicitAnimationsDisabled;
+@property (nonatomic, assign) float                             containerWidth;
+@property (nonatomic, assign) BOOL                              isMaterialNavBar;
 
 @property (nonatomic, strong) WYPopoverTheme                   *theme;
 
