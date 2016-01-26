@@ -1,6 +1,6 @@
 /*
  Version 0.3.6
-
+ 
  WYPopoverController is available under the MIT license.
  
  Copyright © 2013 Nicolas CHENG
@@ -39,25 +39,26 @@
 #endif
 
 typedef NS_OPTIONS(NSUInteger, WYPopoverArrowDirection) {
-  WYPopoverArrowDirectionUp = 1UL << 0,
-  WYPopoverArrowDirectionDown = 1UL << 1,
-  WYPopoverArrowDirectionLeft = 1UL << 2,
-  WYPopoverArrowDirectionRight = 1UL << 3,
-  WYPopoverArrowDirectionNone = 1UL << 4,
-  WYPopoverArrowDirectionAny = WYPopoverArrowDirectionUp | WYPopoverArrowDirectionDown | WYPopoverArrowDirectionLeft | WYPopoverArrowDirectionRight,
-  WYPopoverArrowDirectionUnknown = NSUIntegerMax
+    WYPopoverArrowDirectionUp = 1UL << 0,
+    WYPopoverArrowDirectionDown = 1UL << 1,
+    WYPopoverArrowDirectionLeft = 1UL << 2,
+    WYPopoverArrowDirectionRight = 1UL << 3,
+    WYPopoverArrowDirectionNone = 1UL << 4,
+    WYPopoverArrowDirectionAny = WYPopoverArrowDirectionUp | WYPopoverArrowDirectionDown | WYPopoverArrowDirectionLeft | WYPopoverArrowDirectionRight,
+    WYPopoverArrowDirectionUnknown = NSUIntegerMax
 };
 
 typedef NS_OPTIONS(NSUInteger, WYPopoverAnimationOptions) {
-  WYPopoverAnimationOptionFade = 1UL << 0,            // default
-  WYPopoverAnimationOptionScale = 1UL << 1,
-  WYPopoverAnimationOptionFromTop = 1UL << 2,
-  WYPopoverAnimationOptionFromTopInCenter = 1UL << 3,
-  WYPopoverAnimationOptionFadeWithScale = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionScale,
-  WYPopoverAnimationOptionFadeWithFromTop= WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromTop,
-  WYPopoverAnimationOptionFadeWithFromTopInCenter = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromTopInCenter
-
-
+    WYPopoverAnimationOptionFade = 1UL << 0,            // default
+    WYPopoverAnimationOptionScale = 1UL << 1,
+    WYPopoverAnimationOptionFromLeft = 1UL << 2,
+    WYPopoverAnimationOptionFromTopInCenter = 1UL << 3,
+    WYPopoverAnimationOptionFromLeftInCenter = 1UL << 4,
+    WYPopoverAnimationOptionFadeWithScale = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionScale,
+    WYPopoverAnimationOptionFadeWithFromLeft= WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromLeft,
+    WYPopoverAnimationOptionFadeWithFromLeftInCenter = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromLeftInCenter,
+    WYPopoverAnimationOptionFadeWithFromTopInCenter = WYPopoverAnimationOptionFade | WYPopoverAnimationOptionFromTopInCenter
+    
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
