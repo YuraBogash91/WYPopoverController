@@ -74,7 +74,21 @@ static CGRect _keyboardRect;
 + (void)keyboardWillShow:(NSNotification *)notification {
     NSDictionary *info = [notification userInfo];
     _keyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    
+    CGRect finishKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    CGFloat vertShuffle = screenHeight - finishKeyboardRect.origin.y;
+    if ([[UIDevice currentDevice].systemVersion floatValue] < 8.0) {
+        UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+        if (UIInterfaceOrientationIsLandscape(orientation)) {
+            screenHeight = [UIScreen mainScreen].bounds.size.width;
+            vertShuffle = screenHeight - finishKeyboardRect.origin.x;
+            _keyboardRect.size.width = vertShuffle;
+        }else{
+            _keyboardRect.size.height = vertShuffle;
+        }
+    }else{
+        _keyboardRect.size.height = vertShuffle;
+    }
     _isVisible = YES;
 }
 
