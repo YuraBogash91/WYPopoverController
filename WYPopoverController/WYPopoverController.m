@@ -76,12 +76,20 @@ static CGRect _keyboardRect;
     _keyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect finishKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
-    CGFloat vertShuffle = screenHeight - finishKeyboardRect.origin.y;
+    CGFloat start = finishKeyboardRect.origin.y;
+    if (start == 0) {
+        start = screenHeight - finishKeyboardRect.size.height;
+    }
+    CGFloat vertShuffle = screenHeight - start;
     if ([[UIDevice currentDevice].systemVersion floatValue] < 8.0) {
         UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
         if (UIInterfaceOrientationIsLandscape(orientation)) {
             screenHeight = [UIScreen mainScreen].bounds.size.width;
-            vertShuffle = screenHeight - finishKeyboardRect.origin.x;
+            start = finishKeyboardRect.origin.x;
+            if (start == 0) {
+                start = screenHeight - finishKeyboardRect.size.width;
+            }
+            vertShuffle = screenHeight - start;
             _keyboardRect.size.width = vertShuffle;
         }else{
             _keyboardRect.size.height = vertShuffle;
